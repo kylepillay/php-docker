@@ -1,0 +1,34 @@
+version: '2'
+services:
+  # mysql:
+  #   image: mysql
+  #   command: --default-authentication-plugin=mysql_native_password
+  #   restart: always
+  #   ports:
+  #     - "127.0.0.1:3306:3306"
+  #   environment:
+  #     MYSQL_ROOT_PASSWORD: sexybums
+  db:
+    image: mariadb:latest
+    environment:
+      - MYSQL_ALLOW_EMPTY_PASSWORD=1
+    ports:
+      - "127.0.0.1:3306:3306"
+    volumes:
+      - ~/Docker/mariadb/:/var/lib/mysql/
+  redis:
+    image: redis:latest
+    ports:
+      - "127.0.0.1:6379:6379"
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin:latest
+    ports:
+      - "127.0.0.1:8085:80"
+    links:
+      - db
+  mailcatcher:
+    build: ./mailcatcher
+    ports:
+      - "127.0.0.1:1080:1080"
+      - "127.0.0.1:1025:1025"
+
